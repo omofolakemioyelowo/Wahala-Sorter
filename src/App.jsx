@@ -1,14 +1,29 @@
-import { useState } from 'react';
-import TaskInput from './components/TaskInput';
-import Board from './components/Board';
-import { ListTodo } from 'lucide-react';
-import { v4 as uuidv4 } from 'uuid';
+import { useState } from "react";
+import TaskInput from "./components/TaskInput";
+import Board from "./components/Board";
+import { ListTodo } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
 
 // Sample tasks so the board isn't empty on first visit
 const INITIAL_TASKS = [
-  { id: uuidv4(), title: 'Plan the app layout', status: 'Now', createdAt: Date.now() - 300000 },
-  { id: uuidv4(), title: 'Implement drag and drop', status: 'Soon', createdAt: Date.now() - 100000 },
-  { id: uuidv4(), title: 'Add dark mode support', status: 'Later', createdAt: Date.now() },
+  {
+    id: uuidv4(),
+    title: "Plan the app layout",
+    status: "Now",
+    createdAt: Date.now() - 300000,
+  },
+  {
+    id: uuidv4(),
+    title: "Implement drag and drop",
+    status: "Soon",
+    createdAt: Date.now() - 100000,
+  },
+  {
+    id: uuidv4(),
+    title: "Add dark mode support",
+    status: "Later",
+    createdAt: Date.now(),
+  },
 ];
 
 function App() {
@@ -19,7 +34,7 @@ function App() {
     const newTask = {
       id: uuidv4(),
       title,
-      status: 'Now',
+      status: "Now",
       createdAt: Date.now(),
     };
     setTasks((prev) => [newTask, ...prev]);
@@ -38,7 +53,11 @@ function App() {
     if (!destination) return;
 
     // Dropped back in the exact same spot
-    if (source.droppableId === destination.droppableId && source.index === destination.index) return;
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
+      return;
 
     setTasks((prevTasks) => {
       const newTasks = [...prevTasks];
@@ -49,14 +68,18 @@ function App() {
       movedTask.status = destination.droppableId;
 
       // Collect tasks already in the destination column to find the right insertion index
-      const destTasks = newTasks.filter((t) => t.status === destination.droppableId);
+      const destTasks = newTasks.filter(
+        (t) => t.status === destination.droppableId,
+      );
 
       if (destTasks.length === 0) {
         newTasks.push(movedTask);
       } else {
         const destTaskToInsertBefore = destTasks[destination.index];
         if (destTaskToInsertBefore) {
-          const absoluteIndex = newTasks.findIndex(t => t.id === destTaskToInsertBefore.id);
+          const absoluteIndex = newTasks.findIndex(
+            (t) => t.id === destTaskToInsertBefore.id,
+          );
           newTasks.splice(absoluteIndex, 0, movedTask);
         } else {
           newTasks.push(movedTask);
@@ -73,10 +96,11 @@ function App() {
       <div className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm border-b border-slate-200/50">
         <header className="max-w-6xl mx-auto pt-6 px-6 md:pt-10 md:px-10 pb-3 text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-slate-800 flex items-center justify-center gap-3 tracking-tight">
-            <ListTodo className="text-blue-500" size={36} />
             Wahala Sorter
           </h1>
-          <p className="text-slate-500 mt-2 font-medium">Sort out your wahala smoothly.</p>
+          <p className="text-slate-500 mt-2 font-medium">
+            Sort out your wahala smoothly.
+          </p>
         </header>
         <div className="px-6 md:px-10 pb-5">
           <TaskInput onAddTask={handleAddTask} />
